@@ -47,8 +47,5 @@ Object.keys(conf).forEach(file => {
 });
 
 process.on('SIGINT', () => {
-  children.forEach((i) => {
-    i.kill();
-  });
   console.log(`${C3}Interrupted. Bye!${C0}`);
 });
