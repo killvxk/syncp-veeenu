@@ -1,0 +1,11 @@
+{
+  "name": "syncp",
+  "version": "1.0.0",
+  "description": "Synchronize files from a source to a destination position",
+  "main": "syncp.js",
+  "bin": {
+    "syncp": "syncp.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
