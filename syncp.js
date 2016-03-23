@@ -29,19 +29,18 @@ process.env.PATH = './node_modules/.bin;' + process.env.PATH;
 Object.keys(conf).forEach(file => {
 
   var inpath   = path.join(confd, file),
-      outpath  = path.join(confd, conf[file]),
-      debounce = false;
+      outpaths = conf[file] instanceof Array ? conf[file].map(i => path.join(confd, i)) : [path.join(confd, conf[file])];
 
   console.log('Watching file ' + C1 + file + C0 + '.');
   fs.watch(inpath, (evt, filename) => {
   
-    if(evt !== 'change' || debounce) return;
+    if(evt !== 'change') return;
 
-    console.log(C1 + file + C0 + ' => ' + C2 + conf[file] + C0);
+    outpaths.forEach(outpath => {
+      console.log(C1 + file + C0 + ' => ' + C2 + outpath + C0);
 
-    fs.createReadStream(inpath).pipe(fs.createWriteStream(outpath));
-    debounce = true;
-    setTimeout(() => { debounce = false; }, 50);
+      fs.createReadStream(inpath).pipe(fs.createWriteStream(outpath));
+    });
 
   });
 
