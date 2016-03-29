@@ -32,6 +32,14 @@ Object.keys(conf).forEach(file => {
       outpaths = conf[file] instanceof Array ? conf[file].map(i => path.join(confd, i)) : [path.join(confd, conf[file])];
 
   console.log('Watching file ' + C1 + file + C0 + '.');
+
+  // Copy at start
+  outpaths.forEach(outpath => {
+    console.log(C1 + file + C0 + ' => ' + C2 + outpath + C0);
+
+    fs.createReadStream(inpath).pipe(fs.createWriteStream(outpath));
+  });
+
   fs.watch(inpath, (evt, filename) => {
   
     if(evt !== 'change') return;
