@@ -26,7 +26,7 @@ const C0 = '\033[0m',
 
 process.env.PATH = './node_modules/.bin;' + process.env.PATH;
 
-Object.keys(conf).forEach(file => {
+var watchers = Object.keys(conf).map(file => {
 
   var inpath   = path.join(confd, file),
       outpaths = conf[file] instanceof Array ? conf[file].map(i => path.join(confd, i)) : [path.join(confd, conf[file])];
@@ -40,7 +40,7 @@ Object.keys(conf).forEach(file => {
     fs.createReadStream(inpath).pipe(fs.createWriteStream(outpath));
   });
 
-  fs.watch(inpath, (evt, filename) => {
+  return fs.watch(inpath, (evt, filename) => {
   
     if(evt !== 'change') return;
 
@@ -56,4 +56,6 @@ Object.keys(conf).forEach(file => {
 
 process.on('SIGINT', () => {
   console.log(`${C3}Interrupted. Bye!${C0}`);
+
+  watchers.forEach(i => i.close());
 });
